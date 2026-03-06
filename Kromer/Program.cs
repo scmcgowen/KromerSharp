@@ -97,9 +97,9 @@ app.Use(async (context, next) =>
 
 app.UseWebSockets();
 
-app.MapControllers();
-
 app.UseCors();
+
+app.MapControllers();
 
 app.UseExceptionHandler(builder =>
 {

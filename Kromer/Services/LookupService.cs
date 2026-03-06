@@ -149,7 +149,7 @@ public class LookupService(KromerContext context)
         return new KristResultNames
         {
             Ok = true,
-            Total = await context.Transactions.CountAsync(),
+            Total = await context.Names.CountAsync(),
             Count = entities.Count,
             Names = entities.Select(NameDto.FromEntity).ToList()
         };
