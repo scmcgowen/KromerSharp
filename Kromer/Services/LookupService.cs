@@ -81,7 +81,7 @@ public class LookupService(KromerContext context)
             };
         }
         
-        var total = await context.Transactions.CountAsync();
+        var total = await transactions.CountAsync();
 
         transactions = transactions
             .Skip(offset)
@@ -104,7 +104,7 @@ public class LookupService(KromerContext context)
         var names = context.Names.AsQueryable();
         if (addressList.Count > 0)
         {
-            names = names.Where(q => addressList.Contains(q.Name));
+            names = names.Where(q => addressList.Contains(q.Owner));
         }
 
         if (order == OrderParameter.Asc)
@@ -142,7 +142,7 @@ public class LookupService(KromerContext context)
             };
         }
         
-        var total = await context.Transactions.CountAsync();
+        var total = await names.CountAsync();
 
         names = names
             .Skip(offset)
@@ -197,7 +197,7 @@ public class LookupService(KromerContext context)
             };
         }
         
-        var total = await context.Transactions.CountAsync();
+        var total = await transactions.CountAsync();
 
         transactions = transactions
             .Skip(offset)
@@ -248,7 +248,7 @@ public class LookupService(KromerContext context)
             };
         }
         
-        var total = await context.Transactions.CountAsync();
+        var total = await transactions.CountAsync();
 
         transactions = transactions
             .Skip(offset)
