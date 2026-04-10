@@ -5,6 +5,9 @@ namespace Kromer.Models.Dto;
 
 public class AddressDto
 {
+    [JsonIgnore]
+    public int Id { get; set; }
+    
     public string Address { get; set; }
 
     public decimal Balance { get; set; }
@@ -26,6 +29,7 @@ public class AddressDto
     {
         return new AddressDto
         {
+            Id = wallet.Id,
             Address = wallet.Address,
             Balance = wallet.Balance,
             TotalIn = wallet.TotalIn,
