@@ -12,14 +12,14 @@ namespace Kromer.Controllers.Krist;
 [ApiController]
 public class LookupController(LookupService lookupService) : ControllerBase
 {
-    
     /// <summary>
-    /// Lookup addresses.
+    /// Retrieves details about a set of addresses.
     /// </summary>
-    /// <param name="addresses"></param>
-    /// <param name="fetchNames"></param>
-    /// <returns></returns>
-    /// <exception cref="KristParameterException"></exception>
+    /// <param name="addresses">A comma-separated list of addresses to lookup.</param>
+    /// <param name="fetchNames">Determines whether to include additional name data for the addresses.</param>
+    /// <param name="includePlayers">Indicates whether to include player-related information for the addresses.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains a <see cref="KristLookupAddresses"/> object with the lookup details for the provided addresses.</returns>
+    /// <exception cref="KristParameterException">Thrown when the provided address list is empty or invalid.</exception>
     [HttpGet("addresses/{addresses}")]
     public async Task<ActionResult<KristLookupAddresses>> GetAddresses(string addresses,
         [FromQuery] bool fetchNames = false, [FromQuery] bool includePlayers = false)
@@ -33,18 +33,35 @@ public class LookupController(LookupService lookupService) : ControllerBase
         return await lookupService.GetAddresses(addressList.ToList(), fetchNames, includePlayers);
     }
 
-    
+
     /// <summary>
-    /// Lookup transactions from addresses.
+    /// Retrieves transaction details for specified addresses with configurable ordering and filtering options.
     /// </summary>
-    /// <param name="addresses"></param>
-    /// <param name="orderBy"></param>
-    /// <param name="order"></param>
-    /// <param name="includeMined"></param>
-    /// <param name="limit"></param>
-    /// <param name="offset"></param>
-    /// <returns></returns>
-    /// <exception cref="KristParameterException"></exception>
+    /// <param name="addresses">
+    /// A comma-separated list of addresses to filter the transactions or null to retrieve transactions globally.
+    /// </param>
+    /// <param name="orderBy">
+    /// Specifies the field by which the transactions should be ordered. Valid options are: id, from, to, value, time, sentName, sentMetaname.
+    /// </param>
+    /// <param name="order">
+    /// Specifies the order direction for the transactions. Use "ASC" for ascending or "DESC" for descending.
+    /// </param>
+    /// <param name="includeMined">
+    /// Indicates whether transactions related to mining should be included.
+    /// </param>
+    /// <param name="limit">
+    /// The maximum number of transactions to retrieve. Must be between 1 and 1000.
+    /// </param>
+    /// <param name="offset">
+    /// The number of transactions to skip before starting to include them in the result.
+    /// </param>
+    /// <returns>
+    /// A task that represents the asynchronous operation. The task result contains a <see cref="KristResultTransactions"/> object
+    /// with the transaction details based on the provided parameters.
+    /// </returns>
+    /// <exception cref="KristParameterException">
+    /// Thrown when the provided values for "orderBy" or "order" parameters are invalid.
+    /// </exception>
     [HttpGet("transactions/{addresses?}")]
     [HttpGet("transactions")]
     public async Task<ActionResult<KristResultTransactions>> GetTransactions(string? addresses,
