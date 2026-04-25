@@ -11,7 +11,7 @@ namespace Kromer.Controllers.Internal;
 [Route("api/_internal/wallet")]
 [ApiController]
 [RequireInternalKey]
-public class InternalWalletController(PlayerRepository playerRepository, DiscordService discordService) : ControllerBase
+public class InternalWalletController(PlayerRepository playerRepository, DiscordService discordService, ILogger<InternalWalletController> logger) : ControllerBase
 {
     /// <summary>
     /// Creates a new wallet for the player.
@@ -35,12 +35,19 @@ public class InternalWalletController(PlayerRepository playerRepository, Discord
     {
         var response = await playerRepository.GiveMoneyAsync(request.Address, request.Amount);
 
-        var remoteAddress = HttpContext.Connection.RemoteIpAddress ??
-                            throw new InvalidOperationException("Could not get IP address of remote connection.");
-        if (!LocalAddress.IsLanAddress(remoteAddress))
+        var remoteAddress = HttpContext.Connection.RemoteIpAddress;
+        if (remoteAddress is not null)
         {
-            await discordService.SendGiveMoneyAlertAsync(request.Address, request.Amount, remoteAddress);
+            if (!LocalAddress.IsLanAddress(remoteAddress))
+            {
+                await discordService.SendGiveMoneyAlertAsync(request.Address, request.Amount, remoteAddress);
+            }
         }
+        else
+        {
+            logger.LogWarning("Unable to determine remote address");
+        }
+
 
         return response;
     }
