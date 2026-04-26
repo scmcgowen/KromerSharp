@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Sockets;
 
 namespace Kromer.Utils;
 
@@ -6,6 +7,16 @@ public static class LocalAddress
 {
     public static bool IsLanAddress(IPAddress ip)
     {
+        if (ip.IsIPv4MappedToIPv6)
+        {
+            ip = ip.MapToIPv4();
+        }
+        
+        if (ip.AddressFamily != AddressFamily.InterNetwork)
+        {
+            return false;
+        }
+        
         var bytes = ip.GetAddressBytes();
 
         return bytes[0] == 10 || // Class A
