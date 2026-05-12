@@ -50,7 +50,7 @@ public class DiscordService(IConfiguration configuration, ILogger<DiscordService
             logger.LogError(ex, "Failed to send Discord webhook message");
         }
     }
-    public async Task SendForceTransferAlertAsync(string fromWallet, string toWallet, decimal amount, IPAddress ipAddress, int transactionId)
+    public async Task SendForceTransferAlertAsync(string fromWallet, string toWallet, decimal amount, IPAddress? ipAddress, int transactionId)
     {
         if (WebhookUrl is null)
         {
@@ -68,7 +68,7 @@ public class DiscordService(IConfiguration configuration, ILogger<DiscordService
                 new WebhookMessage.Field("From Wallet", fromWallet, true),
                 new WebhookMessage.Field("To Wallet", toWallet, true),
                 new WebhookMessage.Field("Amount", amount.ToString("F5"), true),
-                new WebhookMessage.Field("IP Address", ipAddress.ToString(), true),
+                new WebhookMessage.Field("IP Address", ipAddress?.ToString() ?? "Unavailable", true),
                 new WebhookMessage.Field("Transaction ID", $"[{transactionId}](https://kromer.club/transactions/{transactionId}`)", true)
             ]
         };
