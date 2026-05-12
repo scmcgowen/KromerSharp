@@ -192,7 +192,5 @@ public class TransactionRepository(
         await transactionService.CommitTransactionAsync(sender, recipient, transaction);
 
         return TransactionDto.FromEntity(transaction);
-
-        return TransactionDto.FromEntity(transaction);
     }
 }
