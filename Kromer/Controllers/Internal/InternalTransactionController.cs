@@ -21,7 +21,7 @@ public class InternalTransactionController(TransactionRepository transactionRepo
         var ipAddress = HttpContext.Connection.RemoteIpAddress;
         if (ipAddress is not null)
         {
-            await discordService.SendForceTransferAlertAsync(request.From, request.To, request.Amount, ipAddress);
+            await discordService.SendForceTransferAlertAsync(request.From, request.To, request.Amount, ipAddress, transaction.Id);
         }
 
         return new KristResultTransaction
