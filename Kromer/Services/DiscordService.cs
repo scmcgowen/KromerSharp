@@ -68,8 +68,8 @@ public class DiscordService(IConfiguration configuration, ILogger<DiscordService
                 new WebhookMessage.Field("From Wallet", fromWallet, true),
                 new WebhookMessage.Field("To Wallet", toWallet, true),
                 new WebhookMessage.Field("Amount", amount.ToString("F5"), true),
-                new WebhookMessage.Field("IP Address", ipAddress.ToString(), false),
-                new WebhookMessage.Field("Transaction ID", $"[{transactionId}](https://kromer.club/transactions/{transactionId}`)", false)
+                new WebhookMessage.Field("IP Address", ipAddress.ToString(), true),
+                new WebhookMessage.Field("Transaction ID", $"[{transactionId}](https://kromer.club/transactions/{transactionId}`)", true)
             ]
         };
 
