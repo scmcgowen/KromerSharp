@@ -149,6 +149,12 @@ public class TransactionRepository(
 
         await transactionService.CommitTransactionAsync(sender, recipient, transaction);
 
+        // Emit transaction event
+        await eventChannel.Writer.WriteAsync(new KristTransactionEvent
+        {
+            Transaction = TransactionDto.FromEntity(transaction),
+        });
+
         return TransactionDto.FromEntity(transaction);
     }
 
@@ -190,6 +196,12 @@ public class TransactionRepository(
         transaction.TransactionType = TransactionType.Mined;
 
         await transactionService.CommitTransactionAsync(sender, recipient, transaction);
+
+        // Emit transaction event
+        await eventChannel.Writer.WriteAsync(new KristTransactionEvent
+        {
+            Transaction = TransactionDto.FromEntity(transaction),
+        });
 
         return TransactionDto.FromEntity(transaction);
     }
