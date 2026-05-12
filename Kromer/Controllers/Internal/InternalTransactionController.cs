@@ -11,7 +11,7 @@ namespace Kromer.Controllers.Internal;
 [RequireInternalKey]
 public class InternalTransactionController(TransactionRepository transactionRepository): ControllerBase
 {
-    [HttpPost("forceTransfer")]
+    [HttpPost("force-transfer")]
     public async Task<ActionResult<KristResultTransaction>> forceTransfer(ForceTransferRequest request)
     {
 
